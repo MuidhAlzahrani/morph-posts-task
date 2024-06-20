@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
-            'posts' => Post::with(['user:id,first_name', 'comments.user'])->latest()->get(),
+            'posts' => Post::with(['user:id,name', 'comments.user'])->latest()->get(),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
