@@ -40,7 +40,7 @@ export default function Post({ post }) {
             <div className="flex-1">
                 <div className="flex justify-between items-center">
                     <div>
-                        <span className="text-gray-800"> {post.user.first_name} </span>
+                        <span className="text-gray-800"> {post.user.name} </span>
                         <span className="text-sm text-gray-600 ml-2"> {dayjs(post.created_at).fromNow()} </span>
                         {post.created_at !== post.updated_at && <small className="text-sm text-gray-600"> &middot; edited</small>}
                     </div>

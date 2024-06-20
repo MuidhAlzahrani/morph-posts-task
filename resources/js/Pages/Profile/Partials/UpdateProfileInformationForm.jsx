@@ -9,8 +9,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        first_name: user.first_name,
-        last_name: user.last_name,
+        name: user.name,
         email: user.email,
     });
 
@@ -32,37 +31,21 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="first_name" value="First Name" />
+                    <InputLabel htmlFor="name" value="Name" />
 
                     <TextInput
-                        id="first_name"
+                        id="name"
                         className="mt-1 block w-full"
-                        value={data.first_name}
-                        onChange={(e) => setData('first_name', e.target.value)}
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
                         required
                         isFocused
-                        autoComplete="first-name"
+                        autoComplete="name"
                     />
 
-                    <InputError className="mt-2" message={errors.first_name} />
+                    <InputError className="mt-2" message={errors.name} />
 
                </div>
-
-                <div>
-                    <InputLabel htmlFor="last_name" value="Last Name" />
-
-                    <TextInput
-                        id="last_name"
-                        className="mt-1 block w-full"
-                        value={data.last_name}
-                        onChange={(e) => setData('last_name', e.target.value)}
-                        required
-                        isFocused
-                        autoComplete="last-name"
-                    />
-                    <InputError className="mt-2" message={errors.last_name} />
-
-                </div>
 
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
