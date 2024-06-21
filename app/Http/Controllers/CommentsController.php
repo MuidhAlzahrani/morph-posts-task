@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comments;
+use App\Models\Post;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
 
 class CommentsController extends Controller
 {
@@ -40,7 +44,7 @@ class CommentsController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return redirect(route('dashboard'));
+        return redirect()->back();
     }
 
     /**
@@ -48,7 +52,7 @@ class CommentsController extends Controller
      */
     public function show(Comments $comments)
     {
-        //
+       
     }
 
     /**

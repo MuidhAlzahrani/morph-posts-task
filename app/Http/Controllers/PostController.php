@@ -16,7 +16,14 @@ class PostController extends Controller
      */
     public function index()
     {
-       //
+       $posts = Post::with(['user:id,name'])
+                     ->withCount('comments')
+                     ->latest()
+                     ->get();
+
+        return Inertia::render('Dashboard', [
+            'posts' => $posts,
+        ]);
     }
 
     /**
@@ -49,7 +56,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $post->loadCount('comments')->load(['user', 'comments.user'])->latest();
+        return Inertia::render('Posts/Show', [
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -71,7 +81,7 @@ class PostController extends Controller
             "message"=> "required|string|max:255",
         ]);
         $post->update($validated);
-        return redirect(route("dashboard"));
+        return redirect()->back();
     }
 
     /**

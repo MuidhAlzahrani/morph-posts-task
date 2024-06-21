@@ -33,9 +33,9 @@ class CommentsResource extends Resource
                     ->required()
                     ->hidden(fn (string $operation): bool => $operation === 'edit'),
 
-                Forms\Components\Select::make('post.message')
+                Forms\Components\Select::make('post_id')
                     ->label('Post')
-                    ->options(Post::all()->pluck('message'))
+                    ->options(Post::all()->pluck('message', 'id'))
                     ->searchable()
                     ->required()
                     ->hidden(fn (string $operation): bool => $operation === 'edit'),

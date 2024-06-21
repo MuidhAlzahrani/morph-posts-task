@@ -31,7 +31,14 @@ class UserResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                TextInput::make('email')
+                    ->required()
+                    ->maxLength(255),
                 DateTimePicker::make('email_verified_at'),
+                TextInput::make('password')
+                    ->required()
+                    ->password()
+                    ->maxLength(16),
                 Radio::make('role')
                     ->required()
                     ->inline()

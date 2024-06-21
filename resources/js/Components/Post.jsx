@@ -5,11 +5,10 @@ import { useForm, usePage } from "@inertiajs/react";
 import InputError from "./InputError";
 import PrimaryButton from "./PrimaryButton";
 import Dropdown from "./Dropdown";
-import Comment from "./Comment";
 
 dayjs.extend(relativeTime);
 
-export default function Post({ post }) {
+export default function Post({ post, href, showCommentsCount }) {
     const { auth } = usePage().props;
 
     const [editing, setEditing] = useState(false);
@@ -18,15 +17,6 @@ export default function Post({ post }) {
         message: post.message,
     });
 
-    const { data: commentData, setData: setCommentData, post: postComment, processing: commentProcessing, reset: resetComment, errors: commentErrors } = useForm({
-        comment: '',
-    });
-
-    const submitComment = (e) => {
-        e.preventDefault();
-        postComment(route('comments.store', post.id), { onSuccess: () => resetComment() });
-    };
-
     const submitPost = (e) => {
         e.preventDefault();
         patch(route('posts.update', post.id), { onSuccess: () => setEditing(false) });
@@ -34,9 +24,6 @@ export default function Post({ post }) {
 
     return (
         <div className="p-6 flex space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600 -scale-x-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
             <div className="flex-1">
                 <div className="flex justify-between items-center">
                     <div>
@@ -64,30 +51,30 @@ export default function Post({ post }) {
                 </div>
                 {editing
                     ? <form onSubmit={submitPost}>
-                        <textarea value={postData.message} onChange={e => setPostData('message', e.target.value)} className="mt-4 w-full text-gray-900 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
+                        <textarea value={postData.message} onChange={e => setPostData('message', e.target.value)} className="mt-4 w-full text-gray-900 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm resize-none h-28"></textarea>
                         <InputError message={postErrors.message} className="mt-2" />
                         <div className="space-x-2">
                             <PrimaryButton className="mt-4" disabled={postProcessing}>Save</PrimaryButton>
                             <button type="button" className="mt-4" onClick={() => { setEditing(false); resetPost(); clearErrors(); }}>Cancel</button>
                         </div>
                     </form>
-                    : <p className="mt-4 text-lg text-gray-900">{post.message}</p>
+                    :   <div> 
+                            {href
+                                ? 
+                                (<a href={href} className="mt-4 text-lg text-gray-900 block">{post.message}</a>)
+                                :
+                                (<span className="mt-4 text-lg text-gray-900 block">{post.message}</span>)
+                            }
+                            {showCommentsCount && (
+                            <div className="text-sm text-gray-500 flex justify-end items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600 -scale-x-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                </svg>
+                                <span className="ml-1">{post.comments_count}</span> 
+                            </div>
+                            )}
+                        </div>
                 }
-                <div className="mt-4">
-                    {post.comments.map(comment => (
-                        <Comment key={comment.id} comment={comment} />
-                    ))}
-                </div>
-                <form onSubmit={submitComment} className="mt-4">
-                    <textarea
-                        value={commentData.comment}
-                        placeholder="Add a comment"
-                        className="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                        onChange={e => setCommentData('comment', e.target.value)}
-                    ></textarea>
-                    <InputError message={commentErrors.comment} className="mt-2" />
-                    <PrimaryButton className="mt-4" disabled={commentProcessing}>Comment</PrimaryButton>
-                </form>
             </div>
         </div>
     );
