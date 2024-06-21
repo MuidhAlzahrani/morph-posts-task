@@ -16,7 +16,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             <GuestLayout>
                 <div className="flex flex-col items-center justify-center">
                     <div className="max-w-2xl p-4">
-                        <h1 className='text-3xl'>Welcome to My Social App</h1>
+                        <h1 className='text-3xl'>Welcome to My Social Site</h1>
                             <nav className="flex flex-1 justify-center items-center mt-4">
                                 {auth.user ? (
 
@@ -27,7 +27,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                         </Link>
                                 ) : (
                                     
-                                    <div className='flex items-center'>
+                                    <div className='flex items-center space-x-1'>
                                         <Link href={route('login')}>
                                             <PrimaryButton className="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                                                 Log in
@@ -41,16 +41,22 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                         >
                                             Register
                                         </Link>
+                                        
+                                        
                                     </div>
                                     
                                 )}
                             </nav>
-                            <Link
-                                href={route('adminLogin')}
-                                    className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-black dark:hover:text-black/80 dark:focus-visible:ring-white"                                >
-                                            Admin Login
-                            </Link>
                     </div>
+                                {!auth.user && (
+                                    <a
+                                    href={route('adminLogin')}
+                                    className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-black dark:hover:text-black/80 dark:focus-visible:ring-white"
+                                    >
+                                    Admin Login
+                                    </a>
+                                )}
+                            
                 </div>
             </GuestLayout>
         </>
